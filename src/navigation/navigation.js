@@ -14,29 +14,25 @@ import RegistrationScreen from '../screen/Registration/Registration';
 import Dashboard from '../screen/Dashboard/Dashboard';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const LoginStack = createStackNavigator();
-const LoginStackScreen = () => (
-  <LoginStack.Navigator>
-    <LoginStack.Screen
+
+const AuthStack = createStackNavigator();
+const AuthStackScreen = () => (
+  <AuthStack.Navigator>
+    <AuthStack.Screen
       name="login"
       component={LoginScreen}
       options={{headerShown: false}}
     />
-  </LoginStack.Navigator>
-);
-
-const RegistrationStack = createStackNavigator();
-const RegistrationStackScreen = () => (
-  <RegistrationStack.Navigator>
-    <RegistrationStack.Screen
+    <AuthStack.Screen
       name="registration"
       component={RegistrationScreen}
       options={{
         headerShown: false,
       }}
     />
-  </RegistrationStack.Navigator>
+  </AuthStack.Navigator>
 );
+
 
 const ProfileStack = createStackNavigator();
 const ProfileStackScreen = props => (
@@ -105,10 +101,9 @@ const RootStackScreen = ({userToken}) => (
       <RootStack.Screen name="app" component={DrawerScreen} />
     ) : (
       <>
-        <RootStack.Screen name="login" component={LoginStackScreen} />
         <RootStack.Screen
-          name="registration"
-          component={RegistrationStackScreen}
+          name="auth"
+          component={AuthStackScreen}
         />
       </>
     )}
@@ -127,12 +122,6 @@ const Navigation = (props) => {
         await AsyncStorage.setItem('token', token);
         setUserToken(token);
       },
-      // signUp: async () => {
-      //   props.navigation.navigate('login');
-      //   // setIsLoading(false);
-      //   // await AsyncStorage.setItem('token', token);
-      //   // setUserToken(token);
-      // },
       signOut: async () => {
         setIsLoading(false);
         await AsyncStorage.removeItem('token');
