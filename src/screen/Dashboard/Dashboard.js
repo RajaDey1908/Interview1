@@ -1,83 +1,90 @@
-import * as React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import React, {useEffect, useState, Component} from 'react';
 
+import {View, Text, ScrollView, StyleSheet, FlatList} from 'react-native';
+import axios from 'react-native-axios';
 
 const Dashboard = () => {
 
+  let [users, setUsers] = useState([]);
+  useEffect(() => {
+    async function fetchStorageValue() {
+      await axios
+        .get('https://reqres.in/api/users')
+        .then(response => {
+          let usersData=response.data.data;
+          let newUsers=[]
+          usersData.map((item, key)=>{
+            let user={
+              name: item.first_name+' '+item.last_name,
+              email: item.email,
+            }
+            newUsers.push(user)
+          })
+          setUsers(newUsers)
+        })
+        .catch(err => ({error: err}));
+    }
+    fetchStorageValue();
+  }, []);
+
   return (
     <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-    <ScrollView keyboardShouldPersistTaps="handled">
-    <View style={{marginTop: 40}}>
+      {console.log("render users",users)}
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{alignItems: 'center'}}>
           <Text style={styles.heading}>Welcome To My Dashboard </Text>
         </View>
-    </View>
-    </ScrollView>
-  </View>
-  );
-}
+        <Text style={styles.subHeading}>Users Listing</Text>
 
+        { users ?<>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+          <Text style={styles.listHeading}>Name</Text>
+          <Text style={styles.listHeading}> </Text>
+          <Text style={styles.listHeading}> </Text>
+          <Text style={styles.listHeading}>Email</Text>
+        </View>
+        <FlatList
+          data={users}
+          renderItem={({item}) => (
+            <>
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                <Text style={styles.item}>{item.name}</Text>
+                <Text style={styles.item}>{item.email}</Text>
+              </View>
+            </>
+          )}
+        /></> :null}
+        
+      </ScrollView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  mainBody: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-  },
-  SectionStyle: {
-    flexDirection: 'row',
-    height: 40,
-    marginTop: 20,
-    marginLeft: 35,
-    marginRight: 35,
-    margin: 10,
-  },
-  buttonStyle: {
-    backgroundColor: '#7DE24E',
-    borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: '#7DE24E',
-    height: 40,
-    alignItems: 'center',
-    borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  buttonTextStyle: {
-    color: '#FFFFFF',
-    paddingVertical: 10,
-    fontSize: 16,
-  },
-  inputStyle: {
-    flex: 1,
-    color: 'white',
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderWidth: 1,
-    borderRadius: 30,
-    borderColor: 'white',
-  },
-  registerTextStyle: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
-  errorTextStyle: {
-    color: 'red',
-    textAlign: 'center',
-    fontSize: 14,
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+    marginLeft: 10,
+    color: '#66c2ff',
   },
   heading: {
     margin: 5,
     fontSize: 25,
+    color: '#307ecc',
+    marginTop: 30,
+  },
+  listHeading: {
+    marginLeft: 30,
+    fontSize: 20,
+    fontWeight:'bold',
+    color: '#307ecc',
+    marginTop: 30,
+  },
+  subHeading: {
+    marginLeft: 30,
+    fontSize: 20,
+    // fontWeight:'bold',
     color: '#307ecc',
     marginTop: 30,
   },
