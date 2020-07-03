@@ -17,12 +17,56 @@ import * as actionTypes from '../../redux/actions/index';
 const LoginScreen = props => {
   const {signIn} = React.useContext(AuthContext);
 
-  const handleSubmitButton = () => {
+  let [email, setEmail] = useState('');
+  let [emailError, setEmailError] = useState('');
+  let [password, setPassword] = useState('');
+  let [passwordError, setPasswordError] = useState('');
+
+  const handleChange = async () => {
     signIn();
+  };
+
+  const onChangeText = (key, val) => {
+    if (key == 'email') {
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (reg.test(val) === false) {
+        setEmailError('Email is Not Correct');
+        setEmail(val);
+        return false;
+      } else {
+        setEmailError('');
+        setEmail(val);
+      }
+    } else if (key == 'password') {
+      setPasswordError('');
+      setPassword(val);
+    }
+  };
+
+  const handleSubmitButton = () => {
+    if (!email || !password) {
+      if (!email) {
+        setEmailError('Please Enter Your Email');
+      }
+      if (!password) {
+        setPasswordError('Please Enter Your Password');
+      }
+      return;
+    }
+    setEmailError('');
+    setPasswordError('');
+
+    var dataToSend = {
+      user_email: email,
+      user_phone: password,
+    };
+
+    console.log('dataToSend in login', dataToSend);
   };
 
   return (
     <View style={styles.mainBody}>
+      {/* <Loader loading={loading} /> */}
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{marginTop: 100}}>
           <KeyboardAvoidingView enabled>
@@ -35,9 +79,13 @@ const LoginScreen = props => {
                 placeholder="Enter Email" //dummy@abc.com
                 placeholderTextColor="#F6F6F7"
                 keyboardType="email-address"
+                onChangeText={val => onChangeText('email', val)}
                 selectionColor={'#FFFFFF'}
               />
             </View>
+            {emailError ? (
+              <Text style={styles.errorTextStyle}>{emailError}</Text>
+            ) : null}
 
             <View style={styles.SectionStyle}>
               <TextInput
@@ -46,15 +94,30 @@ const LoginScreen = props => {
                 placeholderTextColor="#F6F6F7"
                 keyboardType="default"
                 secureTextEntry={true}
+                onChangeText={val => onChangeText('password', val)}
                 selectionColor={'#FFFFFF'}
               />
             </View>
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={handleSubmitButton}>
-              <Text style={styles.buttonTextStyle}>LOGIN</Text>
-            </TouchableOpacity>
+            {passwordError ? (
+              <Text style={styles.errorTextStyle}>{passwordError}</Text>
+            ) : null}
+
+            {!emailError && !passwordError ? (
+              <>
+                <TouchableOpacity
+                  style={styles.buttonStyle}
+                  activeOpacity={0.5}
+                  onPress={handleSubmitButton}>
+                  <Text style={styles.buttonTextStyle}>LOGIN</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <>
+                <View style={styles.buttonStyleDisable} activeOpacity={0.5}>
+                  <Text style={styles.buttonTextStyle}>LOGIN</Text>
+                </View>
+              </>
+            )}
 
             <Text
               style={styles.registerTextStyle}

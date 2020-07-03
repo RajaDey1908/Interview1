@@ -115,7 +115,7 @@ const RootStackScreen = ({userToken}) => (
   </RootStack.Navigator>
 );
 
-const Navigation = () => {
+const Navigation = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userToken, setUserToken] = React.useState(null);
   let token = 'abcd';
@@ -127,11 +127,12 @@ const Navigation = () => {
         await AsyncStorage.setItem('token', token);
         setUserToken(token);
       },
-      signUp: async () => {
-        setIsLoading(false);
-        await AsyncStorage.setItem('token', token);
-        setUserToken(token);
-      },
+      // signUp: async () => {
+      //   props.navigation.navigate('login');
+      //   // setIsLoading(false);
+      //   // await AsyncStorage.setItem('token', token);
+      //   // setUserToken(token);
+      // },
       signOut: async () => {
         setIsLoading(false);
         await AsyncStorage.removeItem('token');
