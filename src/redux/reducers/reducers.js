@@ -1,28 +1,19 @@
-import * as ActionTypes from '../types/types'
-
+import * as ActionTypes from '../types/types';
 
 const initialState = {
-    username: '',
-    password: ''
-}
-
+  userDetails: [],
+};
 
 const reducers = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.GET_USERS:
+      return {
+        ...state,
+        userDetails: action.userDetails,
+      };
+    default:
+      return state;
+  }
+};
 
-    switch (action.type) {
-        case ActionTypes.ADD_USERNAME:
-            return {
-                ...state,
-                username: "test Username"
-            }
-        case ActionTypes.ADD_PASSWORD:
-            return {
-                ...state,
-                username: "test Password"
-            }
-        default:
-            return state
-    }
-}
-
-export default reducers
+export default reducers;

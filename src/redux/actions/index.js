@@ -1,1 +1,1 @@
-export { addUsername, addPassword} from './action'
+export { getUsers} from './action'

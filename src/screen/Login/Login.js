@@ -8,11 +8,8 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import axios from 'react-native-axios';
 
 import {AuthContext} from '../../navigation/context';
-import {connect} from 'react-redux';
-import * as actionTypes from '../../redux/actions/index';
 
 const LoginScreen = props => {
   const {signIn} = React.useContext(AuthContext);
@@ -30,9 +27,11 @@ const LoginScreen = props => {
               <Text style={styles.heading}>User Login </Text>
             </View>
             <View style={styles.SectionStyle}>
+              {console.log('props', props.username)}
+
               <TextInput
                 style={styles.inputStyle}
-                placeholder="Enter Email" //dummy@abc.com
+                placeholder="Enter Email" 
                 placeholderTextColor="#F6F6F7"
                 keyboardType="email-address"
                 selectionColor={'#FFFFFF'}
@@ -42,7 +41,7 @@ const LoginScreen = props => {
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                placeholder="Enter Password" //12345
+                placeholder="Enter Password" 
                 placeholderTextColor="#F6F6F7"
                 keyboardType="default"
                 secureTextEntry={true}
@@ -67,7 +66,6 @@ const LoginScreen = props => {
     </View>
   );
 };
-// export default LoginScreen;
 
 const styles = StyleSheet.create({
   mainBody: {
@@ -142,23 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
-  return {
-    username: state.testReducer.username,
-  };
-};
-// const mapStateToProps = state => {
-//     return {
-//         places: state.places.places,
-//         selectedPlace: state.places.selectedPlace
-//     };
-// };
-
-const mapDispatchToProps = dispatch => {
-  return {
-    // onAddPlace: name => dispatch(addPlace(name)),
-    addUsername: username => dispatch(actionTypes.addUsername(username)),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
-// export default LoginScreen;
+export default LoginScreen;

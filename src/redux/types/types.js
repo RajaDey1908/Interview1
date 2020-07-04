@@ -1,2 +1,1 @@
-export const ADD_USERNAME = 'ADD_USERNAME';
-export const ADD_PASSWORD = 'ADD_PASSWORD';
+export const GET_USERS = 'GET_USERS';
