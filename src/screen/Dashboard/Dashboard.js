@@ -2,14 +2,12 @@ import React, {useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet, FlatList} from 'react-native';
 import {connect} from 'react-redux';
 import * as actionTypes from '../../redux/actions/index';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Dashboard = props => {
   const {userDetails} = props;
   useEffect(() => {
-    async function fetchUserDetails() {
-      await props.getUsers();
-    }
-    fetchUserDetails();
+    props.getUsers();
   }, []);
 
   return (
@@ -19,9 +17,7 @@ const Dashboard = props => {
           <Text style={styles.heading}>Welcome To My Dashboard </Text>
         </View>
         <Text style={styles.subHeading}>Users Listing</Text>
-        {console.log('userDetails---', userDetails)}
-
-        {userDetails ? (
+        {userDetails.length > 0 ? (
           <>
             <View style={{flex: 1, flexDirection: 'row'}}>
               <Text style={styles.listHeading}>Name</Text>
@@ -41,7 +37,13 @@ const Dashboard = props => {
               )}
             />
           </>
-        ) : null}
+        ) : (
+          <Spinner
+            visible={true}
+            textContent={'Data Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        )}
       </ScrollView>
     </View>
   );
@@ -73,6 +75,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#307ecc',
     marginTop: 30,
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
   },
 });
 
