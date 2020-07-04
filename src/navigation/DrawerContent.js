@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import {AuthContext} from '../../navigation/context';
+import {AuthContext} from './context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export function DrawerContent(props) {
@@ -11,18 +11,6 @@ export function DrawerContent(props) {
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
-          <DrawerItem
-            style={styles.drawerSection}
-            icon={() => <Icon name="user" color="#FFFFFF" size={30} />}
-            labelStyle={{
-              fontFamily: 'SomeFont',
-              color: 'white',
-            }}
-            label="Profile"
-            onPress={() => {
-              props.navigation.navigate('profile');
-            }}
-          />
           <DrawerItem
             style={styles.drawerSection}
             icon={() => (
@@ -35,6 +23,18 @@ export function DrawerContent(props) {
             label="Dashboard"
             onPress={() => {
               props.navigation.navigate('dashboard');
+            }}
+          />
+          <DrawerItem
+            style={styles.drawerSection}
+            icon={() => <Icon name="user" color="#FFFFFF" size={30} />}
+            labelStyle={{
+              fontFamily: 'SomeFont',
+              color: 'white',
+            }}
+            label="Profile"
+            onPress={() => {
+              props.navigation.navigate('profile');
             }}
           />
         </View>

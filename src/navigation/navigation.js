@@ -5,7 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {AsyncStorage, Text, Button} from 'react-native';
 
 import {AuthContext} from './context';
-import {DrawerContent} from '../screen/DrawerContent/DrawerContent';
+import {DrawerContent} from './DrawerContent';
 
 import SplashScreen from '../screen/Splash/Splash';
 import Profile from '../screen/Profile/Profile';
@@ -88,8 +88,8 @@ const Drawer = createDrawerNavigator();
 const DrawerScreen = () => {
   return (
     <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-      <Drawer.Screen name="profile" component={ProfileStackScreen} />
       <Drawer.Screen name="dashboard" component={DashboardStackScreen} />
+      <Drawer.Screen name="profile" component={ProfileStackScreen} />
     </Drawer.Navigator>
   );
 };
